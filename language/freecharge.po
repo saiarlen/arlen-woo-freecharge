@@ -1,0 +1,130 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR GPLv2
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: Gateway for Freecharge on WooCommerce 1.0.1\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2020-11-09 20:28+0530\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=CHARSET\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: arlen-woo-freecharge.php:202
+msgid "Enable/Disable"
+msgstr ""
+
+#: arlen-woo-freecharge.php:204
+msgid "Enable this module?"
+msgstr ""
+
+#: arlen-woo-freecharge.php:208
+msgid "Enable Sandbox?"
+msgstr ""
+
+#: arlen-woo-freecharge.php:210
+msgid "Enable Sandbox for Free Charge Payment."
+msgstr ""
+
+#: arlen-woo-freecharge.php:214
+msgid "Merchant ID"
+msgstr ""
+
+#: arlen-woo-freecharge.php:216
+msgid ""
+"Merchant ID is provided with your freecharge merchant account if you did not "
+"the {ID} contact your freecharge support"
+msgstr ""
+
+#: arlen-woo-freecharge.php:219
+msgid "Merchant Key"
+msgstr ""
+
+#: arlen-woo-freecharge.php:221
+msgid ""
+"The secret key can be given by freecharge account Dashboard. Use test or "
+"live for test or live mode."
+msgstr ""
+
+#: arlen-woo-freecharge.php:224
+msgid "Debug log"
+msgstr ""
+
+#: arlen-woo-freecharge.php:226
+msgid ""
+"Note: this may log personal information. We recommend using this for "
+"debugging purposes only and deleting the logs when finished."
+msgstr ""
+
+#: arlen-woo-freecharge.php:227
+msgid "Enable Debug for Free Charge Payment."
+msgstr ""
+
+#: arlen-woo-freecharge.php:231
+msgid "Title:"
+msgstr ""
+
+#: arlen-woo-freecharge.php:233
+msgid "This controls the title which the user sees during checkout."
+msgstr ""
+
+#: arlen-woo-freecharge.php:234
+msgid "Freecharge | Accepts all payment modes"
+msgstr ""
+
+#: arlen-woo-freecharge.php:237
+msgid "Description:"
+msgstr ""
+
+#: arlen-woo-freecharge.php:239
+msgid "This controls the description which the user sees during checkout."
+msgstr ""
+
+#: arlen-woo-freecharge.php:240
+msgid ""
+"Pay securely by Credit or Debit card or Internet Banking through Free Charge "
+"Secure Servers."
+msgstr ""
+
+#: arlen-woo-freecharge.php:247
+msgid "Woocommerce Freecharge Payment Gateway"
+msgstr ""
+
+#: arlen-woo-freecharge.php:248
+msgid ""
+"Allows payments by Credit/Debit Cards, NetBanking, UPI through Freecharge"
+msgstr ""
+
+#: arlen-woo-freecharge.php:264
+msgid "Thank you for your order! please procced to pay."
+msgstr ""
+
+#: arlen-woo-freecharge.php:306
+msgid ""
+"Thank you for your order! We are now redirecting you to Free Charge to make "
+"payment."
+msgstr ""
+
+#: arlen-woo-freecharge.php:337
+msgid "Pay Now"
+msgstr ""
+
+#: arlen-woo-freecharge.php:337
+msgid "Cancel order &amp; restore cart"
+msgstr ""
+
+#: arlen-woo-freecharge.php:471
+msgid "Refund Failed: No transaction ID"
+msgstr ""
+
+#: arlen-woo-freecharge.php:490
+#, php-format
+msgid "Refund Initiated. Amount: %s - Refund ID: %s"
+msgstr ""
