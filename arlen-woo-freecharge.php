@@ -28,30 +28,29 @@
 
 defined('ABSPATH') || exit;
 
-class arConstants
+class arlnwfConstants
 {
     const ENCR = "sha256";
-    const ENCODING = "UTF-8";
 }
 //Checksum Class for Json Request
-class arChecksum
+class arlnwfChecksum
 {
-    public static function arJsonChecksum($json_decode_output, $merchantKey)
+    public static function arlnwfJsonChecksum($json_decode_output, $merchantKey)
     {
         // JSON must be alphabetically serialised and must not contain null or empty values.
-        $sanitizedInput = arChecksum::arSanitizeInput($json_decode_output, $merchantKey);
+        $sanitizedInput = arlnwfChecksum::arlnwfSanitizeInput($json_decode_output, $merchantKey);
 
         // adding merchant Key
         $serializedObj = $sanitizedInput . $merchantKey;
 
         // Calculate Checksum for the serialized string
-        return arChecksum::arCalculateChecksum($serializedObj);
+        return arlnwfChecksum::arlnwfCalculateChecksum($serializedObj);
     }
     
-    private static function arCalculateChecksum($serializedObj)
+    private static function arlnwfCalculateChecksum($serializedObj)
     {
         // Use 'sha-265' for hashing
-        $checksum = hash(arConstants::ENCR, $serializedObj, false);
+        $checksum = hash(arlnwfConstants::ENCR, $serializedObj, false);
         return $checksum;
     }
     /*   public String generateChecksum(String jsonString, String merchantKey)
@@ -76,17 +75,17 @@ class arChecksum
     return checksum.toString();
     }*/
 
-    private static function arRecursiveSort(&$array)
+    private static function arlnwfRecursiveSort(&$array)
     {
         //json object keys alphabetically recursively sortning
         foreach ($array as &$value) {
             if (is_array($value)) {
-                arChecksum::arRecursiveSort($value);
+                arlnwfChecksum::arlnwfRecursiveSort($value);
             }
         }
         return ksort($array);
     }
-    private static function arSanitizeInput(array $json_decode_output, $merchantKey)
+    private static function arlnwfSanitizeInput(array $json_decode_output, $merchantKey)
     {
         $dataWithoutNull = array_filter($json_decode_output, function ($Jout) {
             if (is_null($Jout)) {
@@ -99,7 +98,7 @@ class arChecksum
             return !(trim($Jout) == "");
         });
 
-        arChecksum::arRecursiveSort($dataWithoutNull);
+        arlnwfChecksum::arlnwfRecursiveSort($dataWithoutNull);
         $flags = JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE;
         return json_encode($dataWithoutNull, $flags);
     }
@@ -108,9 +107,9 @@ class arChecksum
 
 
 //Plugin Init
-add_action('plugins_loaded', 'arFreechargeInit', 0);
+add_action('plugins_loaded', 'arlnwfFreechargeInit', 0);
 
-function arFreechargeInit()
+function arlnwfFreechargeInit()
 {
     if (!class_exists('WC_Payment_Gateway')) {
         return;
@@ -126,7 +125,7 @@ function arFreechargeInit()
         /* * @var WC_Logger Logger instance */
         public static $log = false;
 
-        // Go wild in here
+        // core part
         public function __construct()
         {
             $this->id = 'freecharge';
@@ -160,7 +159,7 @@ function arFreechargeInit()
             $this->msg['message'] = "";
             $this->msg['class'] = "";
 
-            add_action('woocommerce_api_' . strtolower(get_class($this)), array($this, 'arFreechargeResponseCheck'));
+            add_action('woocommerce_api_' . strtolower(get_class($this)), array($this, 'arlnwfFreechargeResponseCheck'));
 
             add_action('valid-freecharge-request', array($this, 'successful_request'));
 
@@ -262,7 +261,7 @@ function arFreechargeInit()
         public function receipt_page($order)
         {
             echo '<p>' . __('Thank you for your order! please procced to pay.', 'arlen-woo-freecharge') . '</p>';
-            echo $this->arOutputForm($order);
+            echo $this->arlnwfOutputForm($order);
         }
 
         //Process the payment and return the result
@@ -273,7 +272,7 @@ function arFreechargeInit()
         }
 
         //Generate Free Charge button link
-        public function arOutputForm($order_id)
+        public function arlnwfOutputForm($order_id)
         {
             global $woocommerce;
             $order = new WC_Order($order_id);
@@ -289,7 +288,7 @@ function arFreechargeInit()
             'channel' => "WEB",
          );
 
-            $checksum = arChecksum::arJsonChecksum(json_decode(json_encode($freecharge_args), JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE), $this->secret_key);
+            $checksum = arlnwfChecksum::arlnwfJsonChecksum(json_decode(json_encode($freecharge_args), JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE), $this->secret_key);
 
             $freecharge_args_array = array();
             foreach ($freecharge_args as $key => $value) {
@@ -344,7 +343,7 @@ function arFreechargeInit()
          * Create Checksum for Server Response
          **/
 
-        public function arChecksumResponse($args)
+        public function arlnwfChecksumResponse($args)
         {
             $hashargs = array(
             'txnId' => $args['txnId'],
@@ -355,12 +354,12 @@ function arFreechargeInit()
             'amount' => $args['amount'],
          );
 
-            $hash = arChecksum::arJsonChecksum(json_decode(json_encode($hashargs), JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE), $this->secret_key);
+            $hash = arlnwfChecksum::arlnwfJsonChecksum(json_decode(json_encode($hashargs), JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE), $this->secret_key);
 
             return $hash;
         }
 
-        public function arFreechargeResponseCheck()
+        public function arlnwfFreechargeResponseCheck()
         {
             global $woocommerce;
 
@@ -371,7 +370,7 @@ function arFreechargeInit()
 
             //Log Request
 
-                $this->log($_REQUEST);
+                $this->log(sanitize_text_field($_REQUEST));
 
                 $order_id = (int) wc_clean($_REQUEST['merchantTxnId']);
 
@@ -387,7 +386,7 @@ function arFreechargeInit()
                                 $admin_email = get_option('admin_email');
                                 $msg['message'] = 'Payment was cancelled. Reason: ' . wc_clean($_REQUEST['errorMessage']);
                                 $msg['class'] = 'error';
-                            } elseif ($this->arChecksumResponse(wc_clean($_REQUEST)) === wc_clean($_REQUEST['checksum'])) {
+                            } elseif ($this->arlnwfChecksumResponse(wc_clean($_REQUEST)) === wc_clean($_REQUEST['checksum'])) {
 
                         //verify response using checksum
 
@@ -398,7 +397,7 @@ function arFreechargeInit()
                                     if ($order->status != 'processing') {
                                         $transaction_id = wc_clean($_REQUEST['txnId']);
                                         $order->payment_complete($transaction_id);
-                                        $order->add_order_note('Free Charge payment successful<br/>Ref Number: ' . $_REQUEST['txnId']);
+                                        $order->add_order_note('Free Charge payment successful<br/>Ref Number: ' . sanitize_text_field($_REQUEST['txnId']));
                                         $woocommerce->cart->empty_cart();
                                     }
                                 } elseif ($order_status === "failed" && wc_clean($_REQUEST['errorCode']) == "E005") {
@@ -497,12 +496,12 @@ function arFreechargeInit()
     }
 
     //Add the Gateway to WooCommerce
-    function woocommerce_add_freecharge_gateway($methods)
+    function arlnwf_woocommerce_add_freecharge_gateway($methods)
     {
         $methods[] = 'WC_Gateway_Free_Charge';
 
         return $methods;
     }
 
-    add_filter('woocommerce_payment_gateways', 'woocommerce_add_freecharge_gateway');
+    add_filter('woocommerce_payment_gateways', 'arlnwf_woocommerce_add_freecharge_gateway');
 }

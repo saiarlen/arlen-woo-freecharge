@@ -24,7 +24,7 @@ class WC_Gateway_Free_Charge_Refund
               'refundAmount' => $amount,
            );
 
-        $checksum = arChecksum::arJsonChecksum(json_decode(json_encode($request), JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE), self::$secertkey);
+        $checksum = arlnwfChecksum::arlnwfJsonChecksum(json_decode(json_encode($request), JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE), self::$secertkey);
 
         $request['checksum'] = $checksum;
 
